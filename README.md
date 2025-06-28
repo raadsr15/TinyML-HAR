@@ -20,33 +20,33 @@ The original dataset is the [UCI HAR Dataset](https://archive.ics.uci.edu/ml/dat
 # 🎯 Objective: Human Activity Recognition using 3-axis Accelerometer Data (TinyML Ready)
 
 # 📁 CSV Files Used:
-# ----------------------------------------------------------------------------------
-# 1. accelerometer_3axis_train.csv   → Shape: (7352, 128, 3)
-# 2. accelerometer_3axis_test.csv    → Shape: (2947, 128, 3)
-# 3. y_train_labels.csv              → Shape: (7352, 6)   # One-hot encoded labels
-# 4. y_test_labels.csv               → Shape: (2947, 6)   # One-hot encoded labels
+ ----------------------------------------------------------------------------------
+ 1. accelerometer_3axis_train.csv   → Shape: (7352, 128, 3)
+ 2. accelerometer_3axis_test.csv    → Shape: (2947, 128, 3)
+ 3. y_train_labels.csv              → Shape: (7352, 6)   # One-hot encoded labels
+ 4. y_test_labels.csv               → Shape: (2947, 6)   # One-hot encoded labels
 
 # 🧠 Data Dimensions:
-# ----------------------------------------------------------------------------------
-# - Each sample = 128 time steps (over 2.56 seconds) of 3-axis accelerometer data
-# - Shape per sample = (128, 3) → [X, Y, Z] acceleration readings
-# - Final shape for training:   X_train → (6249, 128, 3),  y_train → (6249, 6)
-# - Final shape for validation: X_val   → (1103, 128, 3),  y_val   → (1103, 6)
-# - Final shape for testing:    X_test  → (2947, 128, 3),  y_test  → (2947, 6)
+ ----------------------------------------------------------------------------------
+ - Each sample = 128 time steps (over 2.56 seconds) of 3-axis accelerometer data
+ - Shape per sample = (128, 3) → [X, Y, Z] acceleration readings
+ - Final shape for training:   X_train → (6249, 128, 3),  y_train → (6249, 6)
+ - Final shape for validation: X_val   → (1103, 128, 3),  y_val   → (1103, 6)
+ - Final shape for testing:    X_test  → (2947, 128, 3),  y_test  → (2947, 6)
 
 # 📌 Class Labels (6 total):
-# ----------------------------------------------------------------------------------
-# 0 → WALKING
-# 1 → WALKING_UPSTAIRS
-# 2 → WALKING_DOWNSTAIRS
-# 3 → SITTING
-# 4 → STANDING
-# 5 → LAYING
+ ----------------------------------------------------------------------------------
+ 0 → WALKING
+ 1 → WALKING_UPSTAIRS
+ 2 → WALKING_DOWNSTAIRS
+ 3 → SITTING
+ 4 → STANDING
+ 5 → LAYING
 
 # 📝 Notes:
-# - The CSVs were generated from UCI HAR Dataset inertial signal files.
-# - Values are normalized and suitable for training with 1D CNN models.
-# - Data split: 85% train / 15% validation from original training set.
+ - The CSVs were generated from UCI HAR Dataset inertial signal files.
+ - Values are normalized and suitable for training with 1D CNN models.
+ - Data split: 85% train / 15% validation from original training set.
 
 # ===========================================================================================
 
