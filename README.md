@@ -15,9 +15,7 @@ The original dataset is the [UCI HAR Dataset](https://archive.ics.uci.edu/ml/dat
 
 **Note**: Preprocessed CSV versions (`accelerometer_3axis_time_series_train.csv`, etc.) must be placed in the appropriate folder (see `src/train_model.py`).
 
-# ============================== 📂 Dataset Structure Overview ==============================
-
-# 🎯 Objective: Human Activity Recognition using 3-axis Accelerometer Data (TinyML Ready)
+#  📂 Dataset Structure Overview 
 
 # 📁 CSV Files Used:
  ----------------------------------------------------------------------------------
