@@ -13,7 +13,7 @@ The project includes full evaluation metrics, such as confusion matrix, accuracy
 
 The original dataset is the [UCI HAR Dataset](https://archive.ics.uci.edu/ml/datasets/human+activity+recognition+using+smartphones), collected from 30 volunteers using a Samsung Galaxy S II smartphone.
 
-**Note**: Preprocessed CSV versions (`accelerometer_3axis_time_series_train.csv`, etc.) must be placed in the appropriate folder (see `src/train_model.py`).
+**Note**: Preprocessed CSV versions (`accelerometer_3axis_time_series_train.csv`, etc.) must be placed in the appropriate folder.
 
 ## Dataset Structure Overview
 
