@@ -233,3 +233,33 @@ From training to deployment, every stage has been optimized to support **real-ti
 This work serves as a **template for building efficient HAR systems** on low-cost, low-power platforms — ideal for applications in **wearables**, **smart fitness**, **elderly monitoring**, and **gesture-based controls**.
 
 You are welcome to fork, adapt, or improve this repository for your own embedded ML applications!
+
+## ⚙️ Installation & Usage
+
+Follow the steps below to set up and run this project in your local environment.
+
+---
+
+###  1. Clone the Repository
+
+```bash
+git clone https://github.com/raadsr15/TinyML-HAR.git
+cd TinyML-HAR
+```
+
+### 2. Install dependencies:
+
+  ```bash
+  pip install -r requirements.txt
+  ```
+### 3. Converting the text file into csv
+   
+```bash
+jupyter notebook test_to_csv_human_activity_recognition.ipynb
+```
+
+### 4. Train the model and display results
+   
+```bash
+jupyter notebook human_activity_recognition_esp32_main.ipynb
+```
