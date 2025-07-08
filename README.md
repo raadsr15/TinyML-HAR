@@ -1,3 +1,6 @@
+
+![Flux_Dev_A_futuristic_techthemed_illustration_showing_a_human__0](https://github.com/user-attachments/assets/f731c34e-11dd-4920-8b21-eded3219d0a7)
+
 # Human Activity Recognition (HAR) using CNN and Smartphone Accelerometer Data
 
 This project focuses on Human Activity Recognition (HAR) using time-series data collected from a 3-axis accelerometer. The data represents six physical activities — walking, walking upstairs, walking downstairs, sitting, standing, and laying — performed by volunteers wearing smartphones. We use a 1D Convolutional Neural Network (CNN) to classify these activities based on temporal patterns in the sensor data.
