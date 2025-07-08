@@ -53,31 +53,157 @@ Human Activity Recognition using 3-axis accelerometer data, optimized for TinyML
 
 ## 🧠 Model Architecture
 
-A 1D Convolutional Neural Network (CNN) is used:
-- Input shape: (128, 3) — 3-axis accelerometer data in time windows
-- Conv1D → MaxPool → Conv1D → MaxPool → Flatten → Dense → Dropout → Output
-- Output: Softmax layer for 6-class classification
+We implement a **1D Convolutional Neural Network (CNN)** optimized for time-series classification. The network captures temporal features from accelerometer sequences and classifies them into six activities.
 
-## 📊 Results
+### 🧩 Architecture Summary
+The model processes 3-axis accelerometer data (shape: `128×3`) using 1D convolutional layers followed by pooling, normalization, and dense layers. Here's the full architecture breakdown:
 
-| Metric           | Value |
-|------------------|-------|
-| Validation Acc   | ~X.XX |
-| Test Accuracy    | ~X.XX |
-| Macro F1-Score   | ~X.XX |
-| Micro F1-Score   | ~X.XX |
+| Layer (Type)                   | Output Shape      | Parameters |
+|--------------------------------|-------------------|------------|
+| Conv1D (128 filters, kernel=8) | (None, 121, 128)  | 3,328      |
+| BatchNormalization             | (None, 121, 128)  | 512        |
+| Dropout (rate=0.5)             | (None, 121, 128)  | 0          |
+| MaxPooling1D (pool_size=2)     | (None, 60, 128)   | 0          |
+| Conv1D (256 filters, kernel=4) | (None, 57, 256)   | 131,328    |
+| BatchNormalization             | (None, 57, 256)   | 1,024      |
+| Dropout (rate=0.5)             | (None, 57, 256)   | 0          |
+| GlobalAveragePooling1D         | (None, 256)       | 0          |
+| Dense (64 units, ReLU)         | (None, 64)        | 16,448     |
+| Dense (6 units, Softmax)       | (None, 6)         | 390        |
+| **Total Parameters**           |                   | **~253,000** |
 
-## 🛠️ Files & Directories
+> ℹ️ The slight difference from 230K is due to additional bias terms and layer configuration.
 
-- `src/`: Python scripts for training, evaluation, model export
-- `models/`: Trained Keras, TFLite, and C header model
-- `data/`: Dataset instructions or metadata
-- `notebooks/`: Optional explorations
-- `requirements.txt`: Required Python packages
+---
 
-## 📦 Dependencies
+### ✅ Design Highlights
 
-Install dependencies using:
+- **1D Convolutions** extract features from sequential sensor inputs.
+- **Dropout (0.5)** applied after each conv block to prevent overfitting.
+- **GlobalAveragePooling1D** reduces dimensionality and improves generalization.
+- **Dense layer** with 64 neurons learns high-level representation.
+- **Softmax output** classifies the signal into one of six activities.
 
-```bash
-pip install -r requirements.txt
+---
+
+### 📥 Input Shape
+
+- `128`: Sensor readings collected over 2.56 seconds (50Hz)
+- `3`: Accelerometer axes (X, Y, Z)
+
+---
+
+## 🏋️‍♂️ Training Details
+
+The CNN model was trained using supervised learning on the labeled accelerometer time-series data.
+
+### 🔧 Hyperparameters
+
+| Parameter          | Value         |
+|--------------------|---------------|
+| Optimizer          | Adam          |
+| Learning Rate      | 0.001         |
+| Loss Function      | Categorical Crossentropy |
+| Batch Size         | 64            |
+| Epochs             | 30            |
+| Validation Split   | 15% (from training set) |
+| Early Stopping     | Enabled (patience = 5) |
+| Data Augmentation  | None          |
+| Input Shape        | (128, 3)      |
+
+### 🧑‍💻 Training Strategy
+
+- Training and validation sets were created from the original training data using an **85-15 split**.
+- **Early stopping** was used to avoid overfitting by monitoring validation loss.
+- **Dropout and Batch Normalization** were key regularization strategies.
+- Model was trained using **Google Colab** with GPU acceleration (optional).
+
+### 📉 Training Observations
+
+![image](https://github.com/user-attachments/assets/59765597-7bf2-4cee-884a-fc8bf8f191d6)
+
+
+- Training and validation loss curves show fast convergence by epoch 10–12.
+- No major overfitting was observed thanks to dropout and validation monitoring.
+- Final model selected using best validation performance checkpoint.
+
+## 📊 Model Evaluation Results
+
+The trained model was evaluated on the held-out test set consisting of 2,947 samples. Performance was measured using standard classification metrics.
+
+### ✅ Overall Metrics (on Test Set)
+
+| Metric            | Score    |
+|-------------------|----------|
+| Accuracy          | **84.53%** |
+| F1 Score (Macro)  | **0.8505** |
+| Precision (Macro) | **0.8453** |
+| Recall (Macro)    | **0.85** |
+
+> 📌 These scores indicate strong generalization across all activity classes, including dynamic and static activities.
+
+---
+
+### 🔍 Confusion Matrix
+
+This matrix shows how well each activity was classified:
+
+![image](https://github.com/user-attachments/assets/db9f75d3-e567-408c-833b-fd7dd0848173)
+
+### 💡 Class-wise Performance Summary
+
+
+| Activity      | Precision | Recall | F1 Score | Support |
+|---------------|-----------|--------|----------|---------|
+| **WALK**      | 0.98      | 0.94   | 0.96     | 496     |
+| **UPSTAIRS**  | 0.90      | 0.96   | 0.93     | 471     |
+| **DOWNSTAIRS**| 0.98      | 0.95   | 0.97     | 420     |
+| **SITTING**   | 0.65      | 0.65   | 0.65     | 491     |
+| **STANDING**  | 0.72      | 0.75   | 0.74     | 532     |
+| **LAYING**    | 0.88      | 0.85   | 0.86     | 537     |
+
+> 📊 Highest performance: **LAYING**, **WALKING_DOWNSTAIRS**  
+> 📉 Slight confusion: **SITTING vs STANDING**
+
+## 📦 Model Export & Deployment
+
+To enable real-time activity recognition on low-power edge devices, the trained CNN model is exported to **TensorFlow Lite (TFLite)** format.
+
+### ✔️ TensorFlow Lite Conversion
+
+The Keras model is first converted to standard TFLite format, which significantly reduces the model size and allows inference on embedded systems like the **ESP32**.
+
+### ⚡ Post-Training Quantization
+
+Post-training quantization is applied to further reduce the model footprint and improve latency. This enables faster inference and lower power consumption — ideal for microcontroller-based deployments.
+
+### 🔁 Export as C Header File
+
+The quantized `.tflite` model is converted into a `.h` C header file. This file can be directly integrated into ESP32 firmware using platforms such as **Arduino IDE** or **ESP-IDF**, making it possible to run inference without external model loading.
+
+### ✔️ Deployment Summary
+
+Three model versions were generated for different deployment targets:
+
+| Format                | Size       | Accuracy     | Avg Inference Time (per sample) |
+|------------------------|------------|--------------|----------------------------------|
+| Keras (.h5)            | 786.56 KB  | 84.53%       | -                                |
+| TFLite (Float32)       | 253.66 KB  | 84.53%       | 0.01 ms                          |
+| TFLite (Quantized)     | 70.37 KB   | 84.12%       | 0.01 ms                          |
+
+- ✅ **Inference times** were tested in a controlled environment and optimized for single-sample processing.
+- ✅ **Quantized model** reduces size by over **90%** compared to the original Keras model with minimal accuracy loss.
+
+---
+
+### ⚠️ Notes & Warnings
+
+- The following warning is expected when using `tf.lite.Interpreter`:
+  > `tf.lite.Interpreter is deprecated and scheduled for deletion in TF 2.20.`  
+  > **Recommended**: Migrate to **LiteRT Interpreter** via `ai_edge_litert`. [Migration Guide](https://ai.google.dev/edge/litert/migration)
+
+- This does **not affect current inference** and is only relevant for future TensorFlow versions.
+
+---
+
+This export process ensures the model is compact, efficient, and deployable in real-time embedded environments like **ESP32**, **Arduino Nano 33 BLE Sense**, or other TinyML-supported devices.
