@@ -207,3 +207,26 @@ Three model versions were generated for different deployment targets:
 ---
 
 This export process ensures the model is compact, efficient, and deployable in real-time embedded environments like **ESP32**, **Arduino Nano 33 BLE Sense**, or other TinyML-supported devices.
+
+## ✅ Conclusion
+
+This project demonstrates a complete, end-to-end pipeline for **Human Activity Recognition (HAR)** using **1D Convolutional Neural Networks** and **smartphone accelerometer data**.
+
+From training to deployment, every stage has been optimized to support **real-time inference** on edge devices such as the **ESP32**, without compromising significantly on accuracy.
+
+---
+
+### 🎯 Key Achievements
+
+- 📊 Achieved **84%+ test accuracy** across six physical activity classes
+- ⚙️ Designed a lightweight **1D CNN model** with only ~253K parameters
+- 📦 Successfully exported to **TensorFlow Lite** and **Quantized TFLite**
+- 🔁 Converted model to **C header file** for seamless firmware integration
+- ⚡ Inference time of **~0.01 ms per sample**, suitable for real-time prediction
+- 🧠 Deployment-ready on **TinyML-compatible microcontrollers**
+
+---
+
+This work serves as a **template for building efficient HAR systems** on low-cost, low-power platforms — ideal for applications in **wearables**, **smart fitness**, **elderly monitoring**, and **gesture-based controls**.
+
+You are welcome to fork, adapt, or improve this repository for your own embedded ML applications!
